@@ -11,6 +11,21 @@ export class App extends Component {
     contacts: [],
   };
 
+  componentDidMount() {
+    const contactsFromStorage = localStorage.getItem('contacts');
+    const parsedContactsFromStorage = JSON.parse(contactsFromStorage);
+
+    if (parsedContactsFromStorage) {
+      this.setState({ contacts: parsedContactsFromStorage });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   loginInputId = nanoid();
 
   formSubmit = ({ name, number }) => {

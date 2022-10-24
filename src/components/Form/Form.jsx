@@ -8,6 +8,7 @@ export class Form extends Component {
   };
 
   loginInputId = nanoid();
+  loginInputNubmerId = nanoid();
 
   handleInput = evt => {
     const { name, value } = evt.target;
@@ -40,9 +41,9 @@ export class Form extends Component {
           onChange={this.handleInput}
           required
         />
-        <Label htmlFor={this.loginInputId}>Phone number</Label>
+        <Label htmlFor={this.loginInputNubmerId}>Phone number</Label>
         <Input
-          id={this.loginInputId}
+          id={this.loginInputNubmerId}
           type="tel"
           name="number"
           value={number}
