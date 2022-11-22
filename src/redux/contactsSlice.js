@@ -1,10 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { nanoid } from 'nanoid';
+import { createSlice, nanoid } from '@reduxjs/toolkit';
+// import { nanoid } from 'nanoid';
 
 const contactInitialState = [
   { id: 0, name: 'Art', number: 4525236236362 },
-  { id: 1, text: 'Bat', number: 2342525 },
-  { id: 2, text: 'Master React', number: 362677472 },
+  { id: 1, name: 'Bat', number: 2342525 },
+  { id: 2, name: 'Master React', number: 362677472 },
 ];
 
 const contactsSlice = createSlice({
@@ -25,8 +25,11 @@ const contactsSlice = createSlice({
         };
       },
     },
-    deleteTask(state, action) {},
+    deleteContact(state, action) {
+      return state.filter(contact => contact.id !== action.payload);
+    },
   },
 });
 
+export const { addContact, deleteContact } = contactsSlice.actions;
 export const contactsReducer = contactsSlice.reducer;

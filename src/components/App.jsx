@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import { Container } from 'styles/Container.styled';
 import { ContactsList } from './ContactsList/ContactsList';
@@ -6,27 +6,35 @@ import { Form } from './Form/Form';
 import { Filter } from './Filter/Filter';
 import { useMemo } from 'react';
 
-const parseDataFromLS = (key, initialValue = []) => {
-  try {
-    return JSON.parse(localStorage.getItem(key)) ?? initialValue;
-  } catch (error) {
-    return initialValue;
-  }
-};
+import { useSelector, useDispatch } from 'react-redux';
+import { getContacts } from 'redux/selectors';
+import { addContact, deleteContact } from 'redux/contactsSlice';
+
+// const parseDataFromLS = (key, initialValue = []) => {
+//   try {
+//     return JSON.parse(localStorage.getItem(key)) ?? initialValue;
+//   } catch (error) {
+//     return initialValue;
+//   }
+// };
 
 export const App = () => {
   const [filter, setFilter] = useState('');
-  const [contacts, setContacts] = useState(() => parseDataFromLS('contacts'));
+  // const [contacts, setContacts] = useState(() => parseDataFromLS('contacts'));
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
+  console.log(contacts);
 
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+  // useEffect(() => {
+  //   localStorage.setItem('contacts', JSON.stringify(contacts));
+  // }, [contacts]);
 
   const formSubmit = ({ name, number }) => {
+    console.log(name);
     const findName = contacts.find(
       contact => contact.name.toLowerCase() === name.toLowerCase()
     );
-
+    console.log(findName);
     if (findName) {
       alert(`${name} is already in contacts`);
     } else {
@@ -35,7 +43,7 @@ export const App = () => {
         name: name,
         number: number,
       };
-      setContacts([...contacts, user]);
+      dispatch(addContact(user));
     }
   };
 
@@ -43,8 +51,8 @@ export const App = () => {
     setFilter(e.target.value);
   };
 
-  const deleteContact = id => {
-    setContacts(contacts.filter(contact => contact.id !== id));
+  const deleteContacts = id => {
+    dispatch(deleteContact(contacts.filter(contact => contact.id !== id)));
   };
 
   const getVisibleContacts = useMemo(() => {
@@ -64,7 +72,7 @@ export const App = () => {
       {contacts.length > 0 && (
         <ContactsList
           visibleContacts={getVisibleContacts}
-          onDeleteContact={deleteContact}
+          onDeleteContact={deleteContacts}
         ></ContactsList>
       )}
     </Container>

@@ -1,12 +1,25 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { Forma, Label, Input, ButtonSubmit } from './Form.styled';
 import { nanoid } from 'nanoid';
+import { useDispatch } from 'react-redux';
+import { addContact } from 'redux/contactsSlice';
+// import { getContacts } from 'redux/selectors';
 
 export const Form = ({ onSubmit }) => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const dispatch = useDispatch();
+  // const contacts = useSelector(getContacts);
+  const handleSubmit = event => {
+    event.preventDefault();
+    const form = event.target;
+    console.log(form.elements.name);
+    onSubmit(dispatch(addContact(form.elements.name)));
+    form.reset();
+  };
 
-  const user = { name, number };
+  // const [name, setName] = useState('');
+  // const [number, setNumber] = useState('');
+
+  // const user = { name, number };
 
   const loginInputId = nanoid();
   const loginInputNubmerId = nanoid();
@@ -16,10 +29,10 @@ export const Form = ({ onSubmit }) => {
 
     switch (name) {
       case 'name':
-        setName(value);
+        dispatch(addContact(value));
         break;
       case 'number':
-        setNumber(value);
+        dispatch(addContact(value));
         break;
 
       default:
@@ -27,16 +40,16 @@ export const Form = ({ onSubmit }) => {
     }
   };
 
-  const handleSubmit = evt => {
-    evt.preventDefault();
-    onSubmit(user);
-    reset();
-  };
+  // const handleSubmit = evt => {
+  //   evt.preventDefault();
+  //   onSubmit(contacts);
+  //   reset();
+  // };
 
-  const reset = () => {
-    setNumber('');
-    setName('');
-  };
+  // const reset = () => {
+  //   setNumber('');
+  //   setName('');
+  // };
 
   return (
     <Forma onSubmit={handleSubmit}>
@@ -46,7 +59,7 @@ export const Form = ({ onSubmit }) => {
         type="text"
         name="name"
         placeholder="enter name"
-        value={name}
+        // value={name}
         pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
         title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
         onChange={handleInput}
@@ -57,7 +70,7 @@ export const Form = ({ onSubmit }) => {
         id={loginInputNubmerId}
         type="tel"
         name="number"
-        value={number}
+        // value={number}
         placeholder="enter number"
         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
