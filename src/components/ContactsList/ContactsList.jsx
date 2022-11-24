@@ -1,22 +1,26 @@
 import { ContactsListItem } from './ContactListItem/ContactListItem';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { List } from './ContactListItem/ContactsList.styled';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { getContacts, getFilteredContacts } from 'redux/selectors';
 
-export const ContactsList = ({ visibleContacts, onDeleteContact }) => {
+export const ContactsList = () => {
+  const filter = useSelector(getFilteredContacts);
+  const contacts = useSelector(getContacts);
+
+  const getVisibleContacts = useMemo(() => {
+    const normalazedFilter = filter.toLowerCase();
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalazedFilter)
+    );
+  }, [filter, contacts]);
+
   return (
     <List>
-      {visibleContacts.map(contact => (
-        <ContactsListItem
-          key={contact.id}
-          visible={contact}
-          onDeleteButton={onDeleteContact}
-        />
+      {getVisibleContacts.map(contact => (
+        <ContactsListItem key={contact.id} visible={contact} />
       ))}
     </List>
   );
-};
-
-ContactsList.propTypes = {
-  visibleContacts: PropTypes.array.isRequired,
-  onDeleteContact: PropTypes.func.isRequired,
 };

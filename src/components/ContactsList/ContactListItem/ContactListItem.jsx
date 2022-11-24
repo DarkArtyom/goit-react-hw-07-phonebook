@@ -1,12 +1,18 @@
 import PropTypes from 'prop-types';
-
+import { useDispatch } from 'react-redux';
 import { Item, BtnDelete } from './ContactsList.styled';
+import { deleteContact } from 'redux/contactsSlice';
 
-export const ContactsListItem = ({ visible, onDeleteButton }) => {
+export const ContactsListItem = ({ visible }) => {
+  const dispatch = useDispatch();
+
   return (
     <Item>
       {visible.name}: {visible.number}
-      <BtnDelete type="button" onClick={() => onDeleteButton(visible.id)}>
+      <BtnDelete
+        type="button"
+        onClick={() => dispatch(deleteContact(visible.id))}
+      >
         Delete
       </BtnDelete>
     </Item>
@@ -15,5 +21,4 @@ export const ContactsListItem = ({ visible, onDeleteButton }) => {
 
 ContactsListItem.propTypes = {
   visible: PropTypes.object.isRequired,
-  onDeleteButton: PropTypes.func.isRequired,
 };
