@@ -2,7 +2,7 @@
 import { Forma, Label, Input, ButtonSubmit } from './Form.styled';
 import { nanoid } from 'nanoid';
 import { useDispatch } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
+import { addContacts } from 'redux/operations';
 
 export const Form = () => {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ export const Form = () => {
     };
 
     console.log(user);
-    dispatch(addContact(user));
+    dispatch(addContacts(user));
     form.reset();
   };
 
