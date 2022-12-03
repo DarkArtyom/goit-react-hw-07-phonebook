@@ -1,4 +1,3 @@
-// import { useState } from 'react';
 import { Forma, Label, Input, ButtonSubmit } from './Form.styled';
 import { nanoid } from 'nanoid';
 import { useDispatch } from 'react-redux';
@@ -6,7 +5,6 @@ import { addContacts } from 'redux/operations';
 
 export const Form = () => {
   const dispatch = useDispatch();
-  // const contacts = useSelector(getContacts);
   const handleSubmit = event => {
     event.preventDefault();
     const form = event.target;
